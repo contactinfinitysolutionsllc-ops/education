@@ -686,9 +686,11 @@ function updateFreeUI(){
 }
 async function isSubscribed(){
   if(!currentUser) return false;
+  const email = currentUser.email || localStorage.getItem('ig_account_email');
+  if(!email) return false;
   try{
     const r=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({action:'checkSubscriber',email:currentUser.email,app:APP_NAME})});
+      body:JSON.stringify({action:'checkSubscriber',email,app:APP_NAME})});
     return (await r.json()).active===true;
   }catch{return false;}
 }
